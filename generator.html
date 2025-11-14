@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>Generator</title>
+<style>
+  body {
+    background: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    font-size: 60px;
+    font-weight: bold;
+  }
+</style>
+</head>
+<body>
+
+<div id="screen">7</div>
+
+<script>
+let screen = document.getElementById("screen");
+
+// دالة لتوليد رقم عشوائي مائل للأرقام الصغيرة
+function randomWeighted() {
+    let r = Math.random();
+    if (r < 0.75) {
+        return (Math.random() * 10 + 1).toFixed(2);
+    } else {
+        return (Math.random() * 24 + 11).toFixed(2);
+    }
+}
+
+// دالة بدء الدورة
+function startCycle() {
+    let count = 7;
+
+    // إرسال توقع جديد للموقع الثاني
+    let predicted = randomWeighted();
+    localStorage.setItem("predict_value", predicted);
+
+    screen.innerHTML = count;
+
+    // العد التنازلي من 7 → 0
+    let countdown = setInterval(() => {
+        count--;
+        screen.innerHTML = count;
+
+        if (count <= 0) {
+            clearInterval(countdown);
+            startUpward(predicted);
+        }
+    }, 1000);
+}
+
+// دالة العد التصاعدي بتسارع متزايد
+function startUpward(target) {
+    let current = 1.00;
+    let speed = 0.01; // البداية بطيئة
+
+    screen.innerHTML = current.toFixed(2);
+
+    let up = setInterval(() => {
+        current += speed;
+        speed *= 1.05; // زيادة السرعة تدريجيًا
+        if (current >= target) {
+            current = parseFloat(target);
+            screen.innerHTML = current.toFixed(2);
+
+            clearInterval(up);
+            localStorage.setItem("final_value", target);
+
+            // الانتظار 3 ثواني ثم إعادة الدورة
+            setTimeout(() => startCycle(), 3000);
+        } else {
+            screen.innerHTML = current.toFixed(2);
+        }
+    }, 30); // تحديث كل 30 مللي ثانية
+}
+
+// بدء أول دورة
+startCycle();
+</script>
+
+</body>
+</html>

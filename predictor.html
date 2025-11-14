@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>Predictor</title>
+<style>
+  body {
+    background: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    font-size: 60px;
+    font-weight: bold;
+  }
+</style>
+</head>
+<body>
+
+<div id="predict">--</div>
+
+<script>
+let predictBox = document.getElementById("predict");
+
+// تحديث التوقع بشكل مستمر
+function checkPrediction() {
+    let value = localStorage.getItem("predict_value");
+    if (value) {
+        predictBox.innerHTML = value;
+    }
+}
+
+// تحديث كل نصف ثانية
+setInterval(checkPrediction, 500);
+</script>
+
+</body>
+</html>
